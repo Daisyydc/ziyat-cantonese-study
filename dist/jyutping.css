@@ -40,3 +40,13 @@ nav a.active{color:var(--green);font-weight:700}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .good{color:#167044}.bad{color:#b02a2a}
 .inlinebtn{border:0;background:none;color:var(--green);text-decoration:underline;cursor:pointer;font:inherit;padding:0 6px}
+/* V3：打字訓練與新版面 */
+.jp-tabs{margin:12px 0 6px}
+a.jp-tab{display:inline-block;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;margin-right:8px;margin-bottom:8px;font-weight:600}
+a.jp-tab.active{background:var(--green);color:#fff;border-color:var(--green)}
+.jp-h2{border-bottom:2px solid var(--green);padding-bottom:4px;margin-top:36px;font-size:1.25rem}
+.tp-input{width:min(360px,100%);padding:9px 12px;border:1px solid #bdb4a4;border-radius:8px;font:inherit;background:#fff}
+.tp-input.wide{width:min(620px,100%)}
+button.jp-legacy{width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--ink);font:inherit}
+button.jp-legacy:hover{border-color:var(--green)}
+.jpline{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
