@@ -367,22 +367,42 @@
     return done;
   }
 
+  /* 原 60 課列表（繁體字學習頁與課程地圖共用）：點擊進入舊課程流程 */
+  function legacyLessonsHtml() {
+    var legacyLessons = (typeof window.DATA !== 'undefined' && window.DATA.lessons) || [];
+    if (!legacyLessons.length) return '';
+    var doneSet = legacyDoneSet();
+    return legacyLessons.map(function (l) {
+      var done = doneSet[String(l.id)] ? '✓' : '○';
+      return '<button type="button" class="jp-lesson jp-legacy" data-legacy="' + l.id + '">' +
+        '<span class="licon">' + done + '</span><span><strong>第 ' + l.week + ' 週 · ' + l.title + '</strong>' +
+        '<small class="muted">' + (l.characters || []).join(' · ') + '</small></span></button>';
+    }).join('');
+  }
+
+  /* 繁體字學習：原 60 課自由課程 + 繁簡打字訓練入口（不再展示 12 週計劃框架） */
+  function fantiView() {
+    var list = legacyLessonsHtml();
+    return '<div class="heading"><div class="eyebrow">TRADITIONAL CHINESE</div><h1>繁體字學習</h1>' +
+      '<p>60 課自由課程：生字、詞語、例句、手寫與小測。不限日期、不限次數，隨時可學、可重學。</p></div>' +
+      '<section class="panel"><h3>繁簡易混字訓練</h3><p>學習→學習、發展 vs 頭髮——先搞懂一對多轉換，再動手打字。</p>' +
+      '<a class="primary" href="#jp-typing/fanti">開始繁簡訓練　↗</a></section>' +
+      '<section class="panel"><h2>課程列表<span class="muted"> ' +
+      ((typeof window.DATA !== 'undefined' && window.DATA.lessons) || []).length + ' 課</span></h2>' +
+      '<p class="muted">進度沿用原站記錄；點課程進入（生字 → 手寫 → 打字 → 小測）。</p>' +
+      '<div class="jp-lessons">' + list + '</div></section>';
+  }
+
   function mapView() {
     var html = '<div class="heading"><div class="eyebrow">COURSE MAP</div><h1>課程地圖</h1>' +
       '<p>不限日期、不限次數，從任何一課開始。</p></div>';
 
     /* ① 繁體字基礎：原 60 課遷入，只讀展示原站完成狀態 */
-    var legacyLessons = (typeof window.DATA !== 'undefined' && window.DATA.lessons) || [];
-    if (legacyLessons.length) {
-      var doneSet = legacyDoneSet();
-      html += '<section class="panel jp-stage"><h2>① 繁體字基礎<span class="muted"> 原課程 ' + legacyLessons.length + ' 課</span></h2>' +
+    var legacyCount = ((typeof window.DATA !== 'undefined' && window.DATA.lessons) || []).length;
+    if (legacyCount) {
+      html += '<section class="panel jp-stage"><h2>① 繁體字基礎<span class="muted"> 原課程 ' + legacyCount + ' 課</span></h2>' +
         '<p class="muted">原 12 週課程已遷入課程地圖；進度沿用原站記錄，可隨時重學。</p>' +
-        '<div class="jp-lessons">' + legacyLessons.map(function (l, i) {
-          var done = doneSet[String(l.id)] ? '✓' : '○';
-          return '<button type="button" class="jp-lesson jp-legacy" data-legacy="' + l.id + '">' +
-            '<span class="licon">' + done + '</span><span><strong>第 ' + l.week + ' 週 · ' + l.title + '</strong>' +
-            '<small class="muted">' + (l.characters || []).join(' · ') + '</small></span></button>';
-        }).join('') + '</div></section>';
+        '<div class="jp-lessons">' + legacyLessonsHtml() + '</div></section>';
     }
 
     /* ②–④ 打字訓練入口 */
@@ -811,6 +831,7 @@
     'jp-home': homeView, 'jp-map': mapView, 'jp-lesson': lessonView,
     'jp-review': reviewView, 'jp-backup': settingsView, 'jp-settings': settingsView,
     'jp-typing': typingView, 'jp-cards': cardsView, 'jp-progress': progressView,
+    'jp-fanti': fantiView,
   };
 
   function render() {
@@ -825,6 +846,7 @@
       'jp-home': '學習首頁', 'jp-map': '課程地圖', 'jp-lesson': '課程',
       'jp-review': '複習與進度', 'jp-backup': '設置與數據', 'jp-settings': '設置與數據',
       'jp-typing': '粵語打字', 'jp-cards': '粵拼與音頻', 'jp-progress': '粵拼進度',
+      'jp-fanti': '繁體字學習',
     };
     var title = titles[route.name] || '粵拼入門';
     if (breadcrumb) breadcrumb.textContent = '粵拼入門 / ' + title;
@@ -838,6 +860,7 @@
     'jp-home': '#jp-home', 'jp-map': '#jp-map', 'jp-lesson': '#jp-map',
     'jp-review': '#jp-review', 'jp-settings': '#jp-settings', 'jp-backup': '#jp-settings',
     'jp-typing': '#jp-typing', 'jp-cards': '#jp-cards', 'jp-progress': '#jp-review',
+    'jp-fanti': '#jp-fanti',
   };
 
   function syncNav(name) {
